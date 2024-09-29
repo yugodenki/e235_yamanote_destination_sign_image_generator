@@ -93,6 +93,7 @@ def generate_image_per_station(input_dir, output_dir, station_list):
   background = open_image(input_dir, "background.png")
   yamanote_line_text = open_image(input_dir, "yamanote_line.png")
   base_text_en = open_image(input_dir, "base_text_en.png")
+  base_text_en_large_capital_letter = open_image(input_dir, "base_text_en_large_capital_letter.png")
   base_text_ja = open_image(input_dir, "base_text_ja.png")
 
   # Generate "Yamanote line" image here to reuse later
@@ -123,7 +124,10 @@ def generate_image_per_station(input_dir, output_dir, station_list):
     bound_base_text_en = open_image(input_dir, f"{bound_text_file_name}_en.png")
     station_text_en = open_image(input_dir, f"{station_file_name}_en.png")
     image_en = background.copy()
-    image_en.alpha_composite(base_text_en)
+    if station_file_name in ["12_otsuka", "16_shinokubo", "24_osaki"]:
+      image_en.alpha_composite(base_text_en_large_capital_letter)
+    else:
+      image_en.alpha_composite(base_text_en)
     image_en.alpha_composite(bound_base_text_en)
     image_en.alpha_composite(station_text_en)
     image_en.save(os.path.join(output_dir, f"{image_counter:03}.png"))
